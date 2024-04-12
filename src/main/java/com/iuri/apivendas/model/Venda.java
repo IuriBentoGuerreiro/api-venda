@@ -1,12 +1,21 @@
 package com.iuri.apivendas.model;
 
+import com.iuri.apivendas.dto.VendaRequest;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "venda")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Venda {
 
     @Id
@@ -22,4 +31,13 @@ public class Venda {
     private Vendedor vendedor;
     @Column(name = "vendedor_nome")
     private String vendedorNome;
+
+    public static Venda converterParaVenda(VendaRequest vendaRequest){
+        return Venda.builder()
+            .data(LocalDateTime.now())
+            .valor(vendaRequest.getValor())
+            .vendedor(new Vendedor(vendaRequest.getIdVendedor()))
+            .vendedorNome(vendaRequest.getVendedorNome())
+            .build();
+    }
 }
