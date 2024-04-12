@@ -1,5 +1,7 @@
 package com.iuri.apivendas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.iuri.apivendas.dto.VendedorRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,9 +25,10 @@ public class Vendedor {
     private Integer id;
     @Column(name = "nome")
     private String nome;
-    @OneToMany
-    @JoinColumn(name = "venda")
-    private List<Venda> venda;
+    @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @JsonIgnore
+    private List<Venda> vendas;
 
    public Vendedor(Integer id){
        this.id = id;
@@ -34,7 +37,6 @@ public class Vendedor {
    public static Vendedor converterParaVendedor(VendedorRequest vendedorRequest){
        return Vendedor.builder()
            .nome(vendedorRequest.getNome())
-           .venda(vendedorRequest.getVenda())
            .build();
    }
 }

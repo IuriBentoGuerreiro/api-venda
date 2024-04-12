@@ -1,5 +1,7 @@
 package com.iuri.apivendas.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iuri.apivendas.dto.VendaRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ public class Venda {
     private BigDecimal valor;
     @ManyToOne
     @JoinColumn(name = "vendedor_id")
+    @JsonBackReference
     private Vendedor vendedor;
     @Column(name = "vendedor_nome")
     private String vendedorNome;
