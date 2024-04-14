@@ -1,6 +1,7 @@
 package com.iuri.apivendas.service;
 
 import com.iuri.apivendas.criterian.VendedorSpecification;
+import com.iuri.apivendas.dto.EstatisticaRecord;
 import com.iuri.apivendas.dto.VendedorFilter;
 import com.iuri.apivendas.dto.VendedorRequest;
 import com.iuri.apivendas.dto.VendedorResponse;
@@ -9,6 +10,8 @@ import com.iuri.apivendas.repository.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,11 +22,38 @@ public class VendedorService {
 
     public VendedorResponse salvarVendedor(VendedorRequest vendedorRequest){
         return VendedorResponse.converterParaResponse(vendedorRepository
-            .save(Vendedor.converterParaVendedor(vendedorRequest)));
+                .save(Vendedor.converterParaVendedor(vendedorRequest)));
     }
 
-    public List<VendedorResponse> listarVendedores(VendedorFilter vendedorFilter){
-        return vendedorRepository.findAll(VendedorSpecification.of(vendedorFilter))
-            .stream().map(VendedorResponse::converterParaResponse).toList();
+    public List<VendedorResponse> listarVendedorEstatisticas(VendedorFilter vendedorFilter){
+        List<Vendedor> vendedores = vendedorRepository.findAll(VendedorSpecification.of(vendedorFilter));
+
+        Integer totalDias = Math.toIntExact(ChronoUnit.DAYS.between(vendedorFilter.getDataInicio(),
+                vendedorFilter.getDataFim()) + 1);
+
+        List<VendedorResponse> vendedorResponse = new ArrayList<>();
+
+        vendedores.forEach(
+                vendedor -> {
+                    var calc = calc(vendedor.getVendas().size(), totalDias);
+
+                    vendedorResponse.add(
+                            VendedorResponse.builder()
+                                    .id(vendedor.getId())
+                                    .nome(vendedor.getNome())
+                                    .venda(vendedor.getVendas())
+                                    .mediaVendas(calc.media())
+                                    .totalVendas(calc.qtdVendas())
+                                    .build());
+                }
+        );
+
+        return vendedorResponse;
+    }
+
+    private EstatisticaRecord calc(Integer qtdVendas, Integer qtdDias) {
+        Integer qtd = qtdVendas;
+        Double media = (double) (qtd/qtdDias);
+        return new EstatisticaRecord(qtd, media);
     }
 }

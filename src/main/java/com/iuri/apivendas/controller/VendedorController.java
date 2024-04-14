@@ -24,9 +24,11 @@ public class VendedorController {
         return vendedorService.salvarVendedor(vendedorRequest);
     }
 
-    @Operation(summary = "Listar vendedores")
-    @GetMapping
-    public List<VendedorResponse>listarVendedores(VendedorFilter vendedorFilter){
-        return vendedorService.listarVendedores(vendedorFilter);
+    @Operation(summary = "Listar estatisticas")
+    @GetMapping("/estatistica")
+    public List<VendedorResponse> listarVendedorEstatisticas(VendedorFilter vendedorFilter) {
+        return vendedorService.listarVendedorEstatisticas(vendedorFilter);
     }
+
+
 }

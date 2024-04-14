@@ -1,6 +1,5 @@
 package com.iuri.apivendas.service;
 
-import com.iuri.apivendas.dto.VendaLogicaResponse;
 import com.iuri.apivendas.dto.VendaRequest;
 import com.iuri.apivendas.dto.VendaResponse;
 import com.iuri.apivendas.model.Venda;
@@ -23,6 +22,4 @@ public class VendaService {
     public List<VendaResponse> lisrarVendas(){
         return vendaRepository.findAll().stream().map(VendaResponse::converterParaResponse).toList();
     }
-
-    public VendaLogicaResponse listarComInformacoes(){}
 }

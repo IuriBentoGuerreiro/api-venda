@@ -20,7 +20,6 @@ public class VendaResponse {
     private LocalDateTime data;
     private BigDecimal valor;
     private Vendedor vendedor;
-    private String vendedorNome;
 
     public static VendaResponse converterParaResponse(Venda venda){
         return VendaResponse.builder()

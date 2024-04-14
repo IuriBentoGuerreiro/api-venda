@@ -18,12 +18,14 @@ public class VendedorResponse {
     private Integer id;
     private String nome;
     private List<Venda> venda;
+    private Integer totalVendas;
+    private Double mediaVendas;
 
     public static VendedorResponse converterParaResponse(Vendedor vendedor){
         return VendedorResponse.builder()
-            .id(vendedor.getId())
-            .nome(vendedor.getNome())
-            .venda(vendedor.getVendas())
-            .build();
+                .id(vendedor.getId())
+                .nome(vendedor.getNome())
+                .venda(vendedor.getVendas())
+                .build();
     }
 }
