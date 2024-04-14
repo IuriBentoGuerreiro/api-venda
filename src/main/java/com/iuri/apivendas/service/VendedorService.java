@@ -35,15 +35,15 @@ public class VendedorService {
 
         vendedores.forEach(
                 vendedor -> {
-                    var calc = calc(vendedor.getVendas().size(), totalDias);
+                    var calcularEstatisticas = calcularEstatisticas(vendedor.getVendas().size(), totalDias);
 
                     vendedorResponse.add(
                             VendedorResponse.builder()
                                     .id(vendedor.getId())
                                     .nome(vendedor.getNome())
                                     .venda(vendedor.getVendas())
-                                    .mediaVendas(calc.media())
-                                    .totalVendas(calc.qtdVendas())
+                                    .mediaVendas(calcularEstatisticas.media())
+                                    .totalVendas(calcularEstatisticas.qtdVendas())
                                     .build());
                 }
         );
@@ -51,7 +51,7 @@ public class VendedorService {
         return vendedorResponse;
     }
 
-    private EstatisticaRecord calc(Integer qtdVendas, Integer qtdDias) {
+    private EstatisticaRecord calcularEstatisticas(Integer qtdVendas, Integer qtdDias) {
         Integer qtd = qtdVendas;
         Double media = (double) (qtd/qtdDias);
         return new EstatisticaRecord(qtd, media);

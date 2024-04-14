@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(VendaController.class)
@@ -71,6 +70,6 @@ class VendaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(vendas), true)); // Ignora a precisão dos milissegundos
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(vendas), true));
     }
 }
